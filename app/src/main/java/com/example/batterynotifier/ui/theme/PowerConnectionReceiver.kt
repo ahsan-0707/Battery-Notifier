@@ -14,7 +14,6 @@ class PowerConnectionReceiver : BroadcastReceiver() {
         val batteryLevel = getBatteryLevel(context)
         val isCharging = intent.action == Intent.ACTION_POWER_CONNECTED
 
-        // Start the BatteryService with the current battery status
         val serviceIntent = Intent(context, BatteryService::class.java).apply {
             putExtra("batteryLevel", batteryLevel)
             putExtra("isCharging", isCharging)

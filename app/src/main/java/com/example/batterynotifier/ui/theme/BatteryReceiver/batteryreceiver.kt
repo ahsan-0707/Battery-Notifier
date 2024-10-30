@@ -9,12 +9,11 @@ class BatteryReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
             Intent.ACTION_POWER_CONNECTED -> {
-                // Broadcast to notify power is connected
                 LocalBroadcastManager.getInstance(context)
                     .sendBroadcast(Intent("com.example.batterynotifier.POWER_CONNECTED"))
             }
+
             Intent.ACTION_POWER_DISCONNECTED -> {
-                // Broadcast to notify power is disconnected
                 LocalBroadcastManager.getInstance(context)
                     .sendBroadcast(Intent("com.example.batterynotifier.POWER_DISCONNECTED"))
             }

@@ -32,6 +32,6 @@
         android:progress="0"
         android:background="@android:color/transparent"
         android:progressTint="@android:color/holo_red_light"
-        android:visibility="gone"/> <!-- Initially hidden -->
+        android:visibility="gone"/>
 
 </LinearLayout>

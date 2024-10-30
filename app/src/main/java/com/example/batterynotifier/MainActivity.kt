@@ -28,14 +28,12 @@ import com.example.batterynotifier.ui.theme.BatteryNotifierTheme
 
 class MainActivity : ComponentActivity() {
 
-    // Create mutable states to hold battery information
     private val batteryLevel = mutableStateOf(0)
     private val isPowerConnected = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Register the receiver for battery state changes
         val intentFilter = IntentFilter().apply {
             addAction(Intent.ACTION_BATTERY_CHANGED)
             addAction(Intent.ACTION_POWER_CONNECTED)
@@ -55,7 +53,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Define a BroadcastReceiver to handle battery and power connection events
     inner class BatteryReceiver : BroadcastReceiver() {
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -65,16 +62,17 @@ class MainActivity : ComponentActivity() {
                     val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
                     isPowerConnected.value = status == BatteryManager.BATTERY_STATUS_CHARGING
 
-                    // Start the BatteryService to update the notification
                     val serviceIntent = Intent(context, BatteryService::class.java).apply {
                         putExtra("batteryLevel", batteryLevel.value)
                         putExtra("isCharging", isPowerConnected.value)
                     }
                     context?.startForegroundService(serviceIntent)
                 }
+
                 Intent.ACTION_POWER_CONNECTED -> {
                     isPowerConnected.value = true
                 }
+
                 Intent.ACTION_POWER_DISCONNECTED -> {
                     isPowerConnected.value = false
                 }
@@ -85,7 +83,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BatteryNotificationScreen(batteryLevel: Int, isPowerConnected: Boolean) {
-    // Animation to fade in or out based on connection status
     val animationAlpha by animateFloatAsState(
         targetValue = if (isPowerConnected) 1f else 0f,
         animationSpec = tween(durationMillis = 1000)

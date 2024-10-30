@@ -46,7 +46,6 @@ class BatteryService : Service() {
             setProgressBar(R.id.batteryCircleGreen, 100, batteryLevel, false)
             setProgressBar(R.id.batteryCircleRed, 100, batteryLevel, false)
 
-            // Show/hide progress bars based on charging status
             if (isCharging) {
                 setViewVisibility(R.id.batteryCircleGreen, View.VISIBLE)
                 setViewVisibility(R.id.batteryCircleRed, View.GONE)
@@ -55,14 +54,13 @@ class BatteryService : Service() {
                 setViewVisibility(R.id.batteryCircleRed, View.VISIBLE)
             }
 
-//            setTextViewText(R.id.batteryPercentage, "$batteryLevel%")
         }
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground) // Ensure you have this drawable
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setCustomContentView(remoteViews)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setPriority(NotificationCompat.PRIORITY_HIGH) // Adjust priority if needed
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
     }
 
@@ -74,7 +72,6 @@ class BatteryService : Service() {
             setProgressBar(R.id.batteryCircleRed, 100, 0, false) // Reset red progress bar
         }
 
-        // Update notification with the temporary message
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setCustomContentView(remoteViews)
@@ -82,14 +79,12 @@ class BatteryService : Service() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 
-        // Show temporary notification
         val notificationManager = getSystemService(NotificationManager::class.java)
         notificationManager.notify(NOTIFICATION_ID, notification)
 
-        // Delay for 3 seconds, then update with the actual battery status
         handler.postDelayed({
             startForeground(NOTIFICATION_ID, createNotification(batteryLevel, isCharging)) // Update with actual battery level
-        }, 3000) // 3 seconds delay
+        }, 3000)
     }
 
     private fun createNotificationChannel() {
@@ -100,7 +95,7 @@ class BatteryService : Service() {
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
                 description = "Channel for battery notifications"
-                setSound(null, null) // Disable sound if not needed
+                setSound(null, null)
             }
             val manager = getSystemService(NotificationManager::class.java)
             manager?.createNotificationChannel(serviceChannel)
